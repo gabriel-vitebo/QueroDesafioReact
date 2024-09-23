@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import QHeading from "./QHeading";
 import QRating from "./QRating";
 import QPrice from "./QPrice";
@@ -28,6 +28,34 @@ const QCardOffer: FC<QCardOfferProps> = ({
   iesLogo,
   iesName,
 }) => {
+  const [kindFormatted, setKindFormatted] = useState<string>(kind)
+  const [fullPriceFormatted, setFullPriceFormatted] = useState<string>(fullPrice)
+  const [offeredPriceFormatted, setOfferedPriceFormatted] = useState<string>(offeredPrice)
+
+
+  console.log(kind.length)
+
+  useEffect(() => {
+    const handleKind = () => {
+      if (kind.length <= 3) {
+        setKindFormatted('EaD')
+      } else {
+        const newPresencialKind = kind.charAt(0).toUpperCase() + kind.slice(1)
+        setKindFormatted(newPresencialKind)
+      }
+    }
+
+    const handleMoneyFormat = (reais: string,) => {
+      const getReais = reais.replace('.', ',')
+
+      return `R$ ${getReais}`
+    }
+
+    handleKind()
+    setFullPriceFormatted(handleMoneyFormat(fullPrice))
+    setOfferedPriceFormatted(handleMoneyFormat(offeredPrice))
+  }, [kind])
+
   return (
     <article className="bg-white p-6 rounded-lg shadow-sm border flex flex-col justify-between items-start gap-3">
       <img src={iesLogo} alt={iesName} className="h-10 object-contain" />
@@ -36,14 +64,14 @@ const QCardOffer: FC<QCardOfferProps> = ({
       </QHeading>
       <QRating rating={rating} />
       <QPrice
-        fullPrice={fullPrice}
-        offeredPrice={offeredPrice}
+        fullPrice={fullPriceFormatted}
+        offeredPrice={offeredPriceFormatted}
         discount={discount}
       />
       <div>
-        <QText tag="p">{kind}</QText>
+        <QText tag="p">{kindFormatted}</QText>
         <QText tag="p" color="minor" size="sm">
-          {level}
+          {`Graduação (${level})`}
         </QText>
       </div>
       <QButton tag="a" size="sm" className="w-full">

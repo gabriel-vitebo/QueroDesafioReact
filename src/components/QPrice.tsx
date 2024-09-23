@@ -8,7 +8,9 @@ interface QPriceProps extends HTMLAttributes<HTMLElement> {
   discount: string;
 }
 
+
 const QPrice: FC<QPriceProps> = ({ fullPrice, offeredPrice, discount }) => {
+
   return (
     <div className="flex gap-2 items-end">
       <div className="flex flex-col">

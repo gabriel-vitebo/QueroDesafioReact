@@ -15,7 +15,7 @@ interface OffersProps {
   id: string,
   courseName: string,
   fullPrice: number
-  discount: number
+  discount: string
   iesLogo: string
   iesName: string
   kind: string
@@ -38,6 +38,7 @@ const App: React.FC = () => {
         const offersResult = await Promise.resolve(data)
 
         setOffers(offersResult)
+        console.log(offersResult[0].fullPrice)
       } catch (error) {
         console.error(error)
       }
@@ -45,6 +46,7 @@ const App: React.FC = () => {
 
     fetchOffers()
   }, [])
+
 
   return (
     <QLayout
