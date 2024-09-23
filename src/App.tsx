@@ -1,19 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import QHeader from "./components/QHeader";
 import QInput from "./components/QInput";
 import QButton from "./components/QButton";
-import QCardOffer from "./components/QCardOffer";
 import QFooter from "./components/QFooter";
 import QLayout from "./components/QLayout";
 import QListCard from "./components/QListCard";
 import QFormOrderByOffer from "./components/QFormOrderByOffer";
 import QFormFilterOffer from "./components/QFormFilterOffer";
 import QSectionForm from "./components/QSectionForm";
+import QCardOffer from "./components/QCardOffer";
+
+interface OffersProps {
+  id: string,
+  courseName: string,
+  fullPrice: number
+  discount: number
+  iesLogo: string
+  iesName: string
+  kind: string
+  level: string
+  offeredPrice: number
+  rating: number
+}
 
 const App: React.FC = () => {
-  const [offers] = useState([]);
-  
+  const [offers, setOffers] = useState<OffersProps[]>([]);
+
+
+
+  useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/offers')
+        const data = response.json()
+
+        const offersResult = await Promise.resolve(data)
+
+        setOffers(offersResult)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchOffers()
+  }, [])
+
   return (
     <QLayout
       header={
